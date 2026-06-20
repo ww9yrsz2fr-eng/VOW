@@ -1,19 +1,25 @@
 import { createContext, useContext, useReducer, useEffect } from 'react'
-import { wedding, budgetItems, guests, tasks, tables, vendors, timelineEvents } from '../data/mockData'
-
 const AppContext = createContext(null)
 
 // ── Persistence ───────────────────────────────────────────────────────────────
 const DATA_KEY = 'vow_data'
 
-const mockDefaults = { wedding, budgetItems, guests, tasks, tables, vendors, timelineEvents }
+const emptyDefaults = {
+  wedding: { coupleNames: '', date: '', venue: '', city: '', totalBudget: 0 },
+  budgetItems: [],
+  guests: [],
+  tasks: [],
+  tables: [],
+  vendors: [],
+  timelineEvents: [],
+}
 
 function loadState() {
   try {
     const saved = localStorage.getItem(DATA_KEY)
     if (saved) return JSON.parse(saved)
   } catch (_) {}
-  return mockDefaults
+  return emptyDefaults
 }
 
 const persisted = loadState()
