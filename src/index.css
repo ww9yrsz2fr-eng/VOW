@@ -1,0 +1,280 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+:root {
+  --vow-ring-bg: #F7F5F1;
+}
+.dark {
+  --vow-ring-bg: #131110;
+}
+
+@layer base {
+  html {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    scroll-behavior: smooth;
+    height: 100%;
+  }
+
+  body {
+    @apply text-stone-900 font-sans transition-colors duration-200;
+    background-color: #F7F5F1;
+    font-size: 14.5px;
+    line-height: 1.65;
+    height: 100%;
+    letter-spacing: 0.005em;
+  }
+
+  #root {
+    height: 100%;
+    display: flex;
+  }
+
+  /* Grain overlay — breaks digital flatness, gives warmth */
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    pointer-events: none;
+    opacity: 0.032;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.78' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+    background-size: 300px 300px;
+  }
+
+  .dark body {
+    @apply text-stone-100;
+    background-color: #131110;
+  }
+
+  .dark body::after {
+    opacity: 0.055;
+  }
+
+  h1, h2, h3, h4 {
+    text-wrap: balance;
+  }
+  p {
+    text-wrap: pretty;
+  }
+
+  ::-webkit-scrollbar        { width: 3px; height: 3px; }
+  ::-webkit-scrollbar-track  { @apply bg-transparent; }
+  ::-webkit-scrollbar-thumb  { @apply bg-stone-300/50 rounded-full; }
+  .dark ::-webkit-scrollbar-thumb { @apply bg-stone-700/50; }
+
+  :focus-visible {
+    @apply outline-none ring-1 ring-accent/50 ring-offset-2 ring-offset-stone-50;
+  }
+  .dark :focus-visible {
+    @apply ring-offset-stone-950;
+  }
+
+  input[type='checkbox'] {
+    @apply accent-accent cursor-pointer;
+  }
+
+  input[type='date']::-webkit-calendar-picker-indicator {
+    @apply opacity-30 dark:invert dark:opacity-20 cursor-pointer;
+  }
+
+  ::selection {
+    background-color: rgb(74 107 88 / 0.18);
+  }
+}
+
+@layer components {
+
+  /* ── Dividers ─────────────────────────────────────────────── */
+  .divider {
+    @apply border-t border-stone-200/70 dark:border-stone-800/60;
+  }
+  .divider-soft {
+    @apply border-t border-stone-100 dark:border-stone-800/50;
+  }
+
+  /* ── Labels ───────────────────────────────────────────────── */
+
+  /* Micro uppercase label — for section meta, data labels */
+  .label-luxury {
+    @apply text-[10.5px] font-medium uppercase tracking-[0.14em]
+           text-stone-400 dark:text-stone-500;
+  }
+
+  /* Editorial eyebrow — sits above display text */
+  .eyebrow {
+    @apply text-[11px] uppercase tracking-[0.18em] font-medium
+           text-stone-400 dark:text-stone-500;
+  }
+
+  /* ── Display & section titles ────────────────────────────── */
+
+  /* Primary view heading — italic Cormorant, editorial weight */
+  .view-title {
+    @apply font-display italic text-[2.75rem] font-light
+           tracking-[-0.015em] leading-[1.1]
+           text-stone-900 dark:text-stone-100;
+  }
+
+  /* Section heading — lighter editorial variant */
+  .section-title {
+    @apply font-display italic text-[1.5rem] font-light
+           tracking-[-0.01em] leading-[1.2]
+           text-stone-800 dark:text-stone-200;
+  }
+
+  /* ── Display number ───────────────────────────────────────── */
+  .num-anchor {
+    @apply font-display font-light tabular-nums leading-none tracking-tight;
+  }
+
+  /* ── Card surface ─────────────────────────────────────────── */
+  /* Minimal editorial card — barely-there surface, no visible border */
+  .card-premium {
+    @apply bg-stone-100/80 dark:bg-stone-900/60
+           border border-stone-200/60 dark:border-stone-800/40
+           rounded-[8px];
+  }
+
+  /* ── Frosted glass ────────────────────────────────────────── */
+  .glass-surface {
+    @apply bg-stone-50/90 dark:bg-stone-950/90 backdrop-blur-md;
+  }
+
+  /* ── Shimmer skeleton ─────────────────────────────────────── */
+  .shimmer {
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+      rgba(255, 255, 255, 0.45) 50%,
+      transparent 100%
+    );
+    background-size: 200% 100%;
+    @apply animate-shimmer;
+  }
+
+  /* ── Filter pills — editorial, angular ───────────────────── */
+  .filter-pill {
+    @apply px-3 py-[5px] rounded-[6px] text-[12px]
+           border border-stone-200/60 dark:border-stone-700/40
+           text-stone-500 dark:text-stone-400 bg-transparent
+           tracking-[0.03em]
+           hover:border-stone-400 dark:hover:border-stone-500
+           hover:text-stone-700 dark:hover:text-stone-300
+           transition-all duration-150 whitespace-nowrap;
+  }
+  .filter-pill.active {
+    @apply text-stone-900 dark:text-stone-100
+           border-stone-700 dark:border-stone-300
+           font-medium;
+  }
+
+  /* ── Form inputs ──────────────────────────────────────────── */
+  .aisle-input {
+    @apply w-full px-3 py-[9px]
+           border border-stone-200/70 dark:border-stone-700/50
+           rounded-[6px]
+           bg-white/60 dark:bg-stone-800/60
+           text-stone-900 dark:text-stone-100 text-[13.5px]
+           outline-none transition-all duration-150
+           placeholder:text-stone-400 dark:placeholder:text-stone-600
+           focus:border-accent dark:focus:border-accent-dark
+           focus:bg-white dark:focus:bg-stone-800;
+  }
+
+  /* ── Inline action buttons ────────────────────────────────── */
+  .inline-btn {
+    @apply inline-flex items-center gap-1.5 px-4 py-[7px] rounded-[5px]
+           text-[12.5px] font-medium tracking-[0.02em]
+           transition-all duration-150 whitespace-nowrap;
+  }
+  .inline-btn-primary {
+    @apply inline-btn bg-stone-900 dark:bg-stone-100
+           text-white dark:text-stone-900
+           ring-1 ring-transparent
+           hover:bg-stone-700 dark:hover:bg-stone-200
+           hover:ring-stone-700 dark:hover:ring-stone-300
+           active:opacity-90;
+  }
+  .inline-btn-ghost {
+    @apply inline-btn
+           bg-transparent
+           text-stone-600 dark:text-stone-400
+           border border-stone-300/80 dark:border-stone-600/60
+           hover:border-stone-500 dark:hover:border-stone-400
+           hover:text-stone-800 dark:hover:text-stone-200;
+  }
+  .inline-btn-danger {
+    @apply inline-btn
+           bg-transparent
+           text-urgent dark:text-urgent-dark
+           border border-urgent/20 dark:border-urgent-dark/20
+           hover:border-urgent/50 dark:hover:border-urgent-dark/50;
+  }
+  .inline-btn-sm {
+    @apply py-[5px] px-3 text-[11.5px];
+  }
+
+  /* ── Editorial stat strip ─────────────────────────────────── */
+  /* Full-width strip — horizontal hairlines only, no card box */
+  .stat-strip {
+    @apply grid grid-cols-2 gap-px
+           bg-stone-200/50 dark:bg-stone-800/30
+           border-t border-b border-stone-200/60 dark:border-stone-800/40;
+  }
+  .stat-cell {
+    @apply bg-[#F7F5F1] dark:bg-[#131110] px-5 py-5;
+  }
+
+  /* ── Add row button ───────────────────────────────────────── */
+  .add-row-btn {
+    @apply flex items-center gap-2 w-full py-4 text-[12.5px]
+           text-stone-400 dark:text-stone-600
+           border-t border-stone-200/60 dark:border-stone-700/40
+           hover:text-accent dark:hover:text-accent-dark
+           transition-colors duration-200 mt-4 tracking-[0.02em];
+  }
+}
+
+/* ── Hot coral flash ───────────────────────────────────────────────────────── */
+@keyframes coralPop {
+  0%   { box-shadow: 0 0 0 0 rgba(255, 90, 95, 0.5); transform: scale(1.18); background-color: #FF5A5F; border-color: #FF5A5F; }
+  55%  { box-shadow: 0 0 0 6px rgba(255, 90, 95, 0); transform: scale(1.06); background-color: #FF5A5F; border-color: #FF5A5F; }
+  100% { box-shadow: 0 0 0 0 rgba(255, 90, 95, 0);   transform: scale(1); }
+}
+
+.coral-pop {
+  animation: coralPop 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@layer utilities {
+  .safe-area-bottom {
+    padding-bottom: max(0.625rem, env(safe-area-inset-bottom));
+  }
+
+  .overflow-clip {
+    overflow: clip;
+  }
+
+  .text-gold {
+    color: #A0813A;
+  }
+  .dark .text-gold {
+    color: #C9A55A;
+  }
+
+  /* Tabular numbers for data */
+  .tabular {
+    font-variant-numeric: tabular-nums;
+  }
+}
